@@ -12,6 +12,7 @@ sudo apt-get install php-curl<br>
 sudo apt-get install php-memcache<br>
 <br>
 then:<br>
-sudo php send_file.php<br>
+git clone https://github.com/S3x0r/Lisk-Send-File/
 <br>
-<br><br>
+And run:<br>
+sudo php send_file.php<br>
