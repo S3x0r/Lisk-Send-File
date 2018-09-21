@@ -134,8 +134,19 @@ if (is_file($GLOBALS['file'])) {
     echo ' Tx(s) to send: '.(1 + CountFiles('tmp/'));
     echo PHP_EOL.PHP_EOL;
 
-    /* Send txs */
-    SendData();
+    echo ' Proceed? (yes/no) : ';
+
+    while ($answer = fgets(STDIN)) {
+           break;
+    }
+
+    $answer = trim($answer);
+
+    if ($answer == 'yes' xor $answer == 'y') {
+        /* Send txs */
+        echo PHP_EOL;
+        SendData();
+    }
 } else {
          echo ' Cannot find file! Exiting.';
          sleep(3);
