@@ -1,6 +1,7 @@
 <?php
 
 error_reporting(0);
+
 require_once('lib/main.php');
 require_once('config.php');
 
@@ -10,87 +11,49 @@ if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 }
 
 echo '
-                                                   F                      
-                                                  q@B                     
-                                                 u@B@O                    
-                                                7@BBB@X                   
-                                               7@BBOMB@u                  
-                                               8B@MMOMB@7                 
-                                                OB@MMOMB@i                
-                                             E   BBBMMOBB@,               
-                                            @BX   @BBOMOBB@               
-                                           OB@BY   @BBOMMB@@              
-                                          NB@M@@r  .@@BMMMBB@             
-                                         uB@MMM@Br  :@BMOMM@BM            
-                                        7@@MMOBB@O   r@BMOMM@B0           
-                                       iB@MMOMB@O     j@BMOMO@B2          
-                                      :B@MMOMM@B       S@BMOMM@Bv         
-                                      B@MMOMM@B         G@BMOMM@@i        
-                                     B@MMOMM@B           M@MMOMM@B:       
-                                    B@MMOMM@B,            @@MMOMM@B.      
-                                   8@BMOMM@@i              @@MMOMM@B      
-                                  X@BMOMM@B7               .B@MMOMM@B     
-                                 u@BMOMO@Bu                 :B@MMOMB@O    
-                                7@BMOMM@BP                   7B@MMOMB@q   
-                               i@@BOMMBBO                     jB@MMOMB@2  
-                              ,@@MOMOMBE                       JBMOMOMB@L 
-                             :@BBMMOMM@                         @BMOMMBB@J
-                             rB@BBOMOMB@:                     .MBMOMOMB@B1
-                               8@@BOMOMB@F                   7@BBMMOMB@B, 
-                                L@B@MMMMB@B.                E@BMMMMBB@P   
-                                 .@B@MMOMB@@7             :B@BMOMM@@@r    
-                                   NB@MMOMM@B0vJJuuqZ,   JB@MMOMM@B@      
-                                    7B@MMMMM@B@B@B@B7   MB@MMOMM@@F       
-                                     .@@BMOMMMMBB@Z   :@B@MMOBB@@i        
-                    ......,.,...       F@BBMMOMM@B. .u@B@MBMBB@M          
-                .,,,.........,.,,:..    i@B@MBMMZGrMB@B@B@@@B@u           
-             .,:,.... . ... ......,,:.    M@@OZU1P@@M2F25255X:            
-           .::...        ,,:...  ......    rSBEPPMB5                      
-          ,,...  .iLSkkuv::ir;,,.     .,.     MOMB2                       
-           ... .:1O8j7ii7jvi. ,ELLXkFF25ku   jBBBP
-     ,r7v;:.,,,i5Mu.      :Li :uPv@BBZqkXNv  rOB@7
-  .iuGZkuuJJ7:iLEk    7u:  :jirXGrX@PUv7i:,   .r. 
- .7FMj:     :LLrOi   SBBB.  YJ7jMUri,.,.,.,  .::
- 7JML     7i .v;5i   jZSL   LFi77Fi:,::::::. :i:
-,75E.   :S@Bv r7rr         :57r7Y7::::i::::,:,r 
-,vuP    .8Zki iYrrr.      ,J;vFSLi::::::::.:,:i 
- r7U,     .   vr,:r7i,..,iv:iPSLi:::::::i7J:,i. 
- ,7v7.       i7:vi.:iriiiiiJuLri::::,,i5E@M:.i  
-  ,rvvi.. ..ri,u@EY;i:::i7L7rri::::.:uZMMM7 ::  
-   .:r77riii:ij5r::::iii::.;YSi::,,7Z@8Fvr.,:u. 
-      ,,::::rri.....,..7jLkB@P,:,:2GBZ7.,,,::i. 
-      i::::::FLv;rjMZqG@B@B@O...iXOOFi.,,::i:,  
-      L:.,,.:O@B@B@B@B@B@B@L  .7EZZL:.:::::i::  
-      jJ ..,. :1M@B@B@BOu:   .JO8ki..::::::i::  
-      ,qi         ...    .:rjSOqF:.,::::::::::. 
-       YS:.,,i:i:;i;r7u5S0SJE@81...::::::::::i. 
-       .u8P2XSSSFFqPkSPFFuuJu2q5,.,,::::::::::, 
-       ..S85U2jU21U2UujuUuJ1uU5Sr..:::::::::,:. 
-       ...UuuJJLYv7;vvYLu2U1FU251:....,,,::::r7 
-       ...vUJYYuLv7LvJvLYSLuuuJ1jv::ir;7vYLUUXB,
-       .:.ruJLLJJLjLuujJF2JLjuuuSuqUXkkjqNkF5SF 
-       .7J7uvYYju1uF55U5UjujLjYuSuuNFPSY1qPkFP. 
-        :uuvLLJLuu2UuLjjUuuYU1U7LvYuS11ukXXNGi  
-      .GkFrLjUYJLjYuvvuUYuuuUFu2Juu1215NNGON,   
-       E@BF7JUFSXSF21JFFFFS151kXPkF5q0MM@Ov     
-       2BM@MFUF0GONX55u150OOZqkPkNqMB@85:       
-       J@OOB@B@: :8O0PN0BqjLX@OGOO@Mi           
-        E@@@BG    :BB@B@M    @BO8MO             
-         :S@@7   JEB@B@BJ    .@B@Bv             
-                0@@@B@B@@vii:EB@B@BZ'.PHP_EOL;
+ B@B@B@B@@@B@B@B@B@B@B@B@@@B@B@B@B@B@@@@@@@B@B@B@B@B@@@B@B
+ @B@BGB@B@B@B@B@@@B@@@B@B@B@@@B@B@B@B@B@@@B@B@B@@@B@@@@@B@
+ B@B@  :@Bi:@B@B@B@@@B@BGS522s22SXMB@B@B@B@B@B@B@B@@@B@B@B
+ @: r   :   H@B@B@B@9sr;rrs5ssss2H2229M@@@B@B@B@B@B@B@B@@@
+ B         S@B@@@B,      ,::rsGB5:,  ,:i9@@B@B@B@B@B@, B@B
+ @B@M,     @B@X@X   rMB@Mr:,:MS          iB@B@B2  B@   @@@
+ B@@@B@    :@BGB  sB@B@;sBBrii  rB@B@B2:, :B@B@i         s
+ @@@B@@@ii:sB@9X ,@@B,    BSi  9Bi ,B@B@r,  M@B@B        S
+ B@@@B@B@92,@9,X  @B@,   ,@2i  @     B@GX:,  B@@,     X@@B
+ @B@@@B@BMs:r@r;i i@B@G2M@S::, @s  ,X@G92,   ,B@    B@B@B@
+ @@B@B@M@B2r:sssr: i29@B5i,  r :@B@B@BXr,,   ,@;::rM@B@B@B
+ @B@B@B@B@Gs:rHSSsi:,,,,     ,:,,rssri,,,iir,9s  rB@B@B@B@
+ B@B@B@B@B@si:XSSSsrsi::,,,::,:::,,,, ,,:;rsr,  :B@B@B@B@B
+ @B@B@B@@@BG: :XXG: :rssssS3x0rS2ssr::irrrrrr  ,B@B@B@B@B@
+ B@B@B@B@B@Bs  :SGM                 :rrrsr,    G@B@@@B@B@@
+ @B@@@B@B@B@Xs  :SM@               ,ssss,     r@B@B@B@B@B@
+ B@B@B@@@B@B2Hs  :SM@@sr:,      :sMG22s,   ,r:@@@B@B@B@B@B
+ @B@B@B@B@B@2s9s,  ,::r222sHSX222srri:   ,rrirB@B@B@B@B@B@
+ B@B@B@B@B@B2s292                       :rri:2@B@B@B@B@B@B
+ @B@B@B@@@B@Ss29s,  ,, ,         ,     rrrii,M@@B@@@B@B@B@
+ B@B@B@B@B@@MsXGs,,,,, ,,:i:,,,       ,ssrriiB@B@B@@@B@B@B
+ @B@B@B@@@B@r:r5r ,,,, ,,,,, ,,       ,rii:,,@B@B@@@B@B@B@
+ B@B@B@B@B@@:   ,,:,,,,          ,,          G@@@B@B@B@B@B
+ @B@B@B@B@B@B   ,,,,,,,,   ,                X@B@B@B@B@B@@@
+ B@B@B@B@B@B@B        , , ,,               9@B@B@B@B@B@B@B
+ @B@B@@@B@B@B@Br                         i@@B@B@B@B@B@B@B@
+ B@B@B@B@B@@@B@B@Br:                  rM@B@B@B@B@B@B@B@B@@
+ @B@B@B@B@@@B@B@@@B@B@2           :GB@BBG9XXSSS9X9999G9GGM
+ B@B@@@B@B@B@B@@@B@B@@s           Srri;i;rrrssssssss22S5HS
+ @B@B@B@B@B@BBMMGG9G:              :,::::iir;rs22SXGGMMMMB'.PHP_EOL.PHP_EOL.PHP_EOL;
+
+echo ' Lisk Send 0.3 (send file to lisk blockchain)'.PHP_EOL;
+echo ' by minionsteam.org, phoenix1969, sexor, zOwn3d'.PHP_EOL;
+echo ' ------------------------------------------------------'.PHP_EOL;
 
 if (!is_dir('tmp/')) {
     mkdir('tmp/');
 } else {
-         DeleteTempFiles();
+    if (count(glob("tmp/*")) !== 0) {
+        echo ' Cleaning temp dir...'.PHP_EOL;
+        DeleteTempFiles();
+    }
 }
-
-echo PHP_EOL;
-echo ' Send file to Lisk blockchain, by minionsteam.';
-echo PHP_EOL;
-echo ' --------------------------------------------------';
-echo PHP_EOL;
-echo PHP_EOL;
 
 if (empty($GLOBALS['ADDRESS']) or empty($GLOBALS['PASSWORD'])) {
     echo ' You need to configure config.php! Exiting.';
@@ -106,12 +69,21 @@ while ($GLOBALS['file'] = fgets(STDIN)) {
 
 $GLOBALS['file'] = trim($GLOBALS['file']);
 
-if (is_file($GLOBALS['file'])) {
+if (is_file(dirname(__FILE__).DIRECTORY_SEPARATOR.$GLOBALS['file'])) {
     echo PHP_EOL;
-    echo ' File size         : '.filesize($GLOBALS['file']).'b'.PHP_EOL;
+    echo ' File size         : '.formatBytes(filesize($GLOBALS['file'])).PHP_EOL;
+    
+    /* zip file */
+    echo ' Compressing file...'.PHP_EOL;
+    $zip = new ZipArchive();
+    $filename = './encoded_file';
+    $zip->open($filename, ZipArchive::CREATE);
+    $zip->addFile($GLOBALS['file']);
+    $zip->close();
 
-    $file_content = file_get_contents($GLOBALS['file']);
+    $file_content = file_get_contents('encoded_file');
 
+    /* encode file */
     $base91 = new Base91();
     $encoded_content = $base91->encode($file_content);
 
@@ -120,8 +92,9 @@ if (is_file($GLOBALS['file'])) {
   
     $file_name = 'encoded_file';
 
-    echo ' Encoded file size : '.filesize($file_name).'b';
+    echo ' Encoded file size : '.formatBytes(filesize($file_name));
     echo PHP_EOL;
+    echo ' Spliting file...'.PHP_EOL;
 
     Split($file_name, 'tmp/');
 
@@ -146,10 +119,13 @@ if (is_file($GLOBALS['file'])) {
         /* Send txs */
         echo PHP_EOL;
         SendData();
+    } else {
+             DeleteTempFiles();
     }
 } else {
-         echo ' Cannot find file! Exiting.';
-         sleep(3);
+         echo PHP_EOL.' File does not exist or is located in another directory'.PHP_EOL;
+         echo ' file to be sent must be in the same directory as tool directory, Exiting.';
+         sleep(5);
 }
 //---------------------------------------------------------------------------------------------------
 function SendData()
@@ -169,7 +145,7 @@ function SendData()
             $result = SendTransaction(json_encode($tx), $GLOBALS['server']);
 
             if ($result['data']['message'] == 'Transaction(s) accepted') {
-                echo ' Transaction: ('.($key+1).') < sent'.PHP_EOL;
+                echo ' Transaction: ('.($file).') < sent'.PHP_EOL;
 //---------------------------------------------------------------------------------------------------
                 /* send meta data */
                 echo PHP_EOL.' Sending Meta Data...'.PHP_EOL;
@@ -180,7 +156,7 @@ function SendData()
                 $Func = new Base91();
                 
                 /* meta data */
-                $data = $Func->encode("M'".$filename."'".$size."'".$id);
+                $data = $Func->encode("M'".$filename."'".filesize('encoded_file')."'".$id);
             
                 $tx = CreateTransaction($GLOBALS['ADDRESS'], '1', $GLOBALS['PASSWORD'], false, $data, -10);
                 $result = SendTransaction(json_encode($tx), $GLOBALS['server']);
@@ -218,13 +194,14 @@ function SendData()
 
             $result = SendTransaction(json_encode($tx), $GLOBALS['server']);
             if ($result['data']['message'] == 'Transaction(s) accepted') {
-                echo ' Transaction: ('.($key+1).') < sent'.PHP_EOL;
+                echo ' Transaction: ('.$file.') < sent'.PHP_EOL;
             } else {
                      echo 'ERROR: '.PHP_EOL;
                      var_dump($tx);
                      var_dump($result);
                      die();
             }
+         /* slow down if file bigger */
         //sleep(1);
         }
     }
@@ -232,6 +209,10 @@ function SendData()
 //---------------------------------------------------------------------------------------------------
 function DeleteTempFiles()
 {
+    if (is_file('encoded_file')) {
+        unlink('encoded_file');
+    }
+
     $di = new RecursiveDirectoryIterator('tmp/', FilesystemIterator::SKIP_DOTS);
     $ri = new RecursiveIteratorIterator($di, RecursiveIteratorIterator::CHILD_FIRST);
     
@@ -271,9 +252,17 @@ function Split($filename, $dir)
     }
     fclose($w);
     fclose($r);
+}
+//---------------------------------------------------------------------------------------------------
+function formatBytes($size, $precision = 0)
+{
+    $unit = ['Byte(s)','KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB'];
 
-    /* delete temp */
-    unlink('encoded_file');
+    for ($i = 0; $size >= 1024 && $i < count($unit)-1; $i++) {
+         $size /= 1024;
+    }
+
+    return round($size, $precision).' '.$unit[$i];
 }
 //---------------------------------------------------------------------------------------------------
 class Base91
