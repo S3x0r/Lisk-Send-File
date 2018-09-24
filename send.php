@@ -2,8 +2,10 @@
 
 error_reporting(0);
 
-require_once('lib/main.php');
+require_once('lib.php');
 require_once('config.php');
+
+define('N', PHP_EOL);
 
 if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
     chdir('../');
@@ -40,92 +42,123 @@ echo '
  B@B@B@B@B@@@B@B@Br:                  rM@B@B@B@B@B@B@B@B@@
  @B@B@B@B@@@B@B@@@B@B@2           :GB@BBG9XXSSS9X9999G9GGM
  B@B@@@B@B@B@B@@@B@B@@s           Srri;i;rrrssssssss22S5HS
- @B@B@B@B@B@BBMMGG9G:              :,::::iir;rs22SXGGMMMMB'.PHP_EOL.PHP_EOL.PHP_EOL;
+ @B@B@B@B@B@BBMMGG9G:              :,::::iir;rs22SXGGMMMMB'.N.N.N;
 
-echo ' Lisk Send 0.3 (send file to lisk blockchain)'.PHP_EOL;
-echo ' by minionsteam.org, phoenix1969, sexor, zOwn3d'.PHP_EOL;
-echo ' ------------------------------------------------------'.PHP_EOL;
-
-if (!is_dir('tmp/')) {
-    mkdir('tmp/');
-} else {
-    if (count(glob("tmp/*")) !== 0) {
-        echo ' Cleaning temp dir...'.PHP_EOL;
-        DeleteTempFiles();
-    }
-}
+echo ' Lisk Send 0.4 (send file to lisk blockchain)'.N;
+echo ' by minionsteam.org, phoenix1969, sexor, zOwn3d'.N;
+echo ' ------------------------------------------------------'.N;
 
 if (empty($GLOBALS['ADDRESS']) or empty($GLOBALS['PASSWORD'])) {
-    echo ' You need to configure config.php! Exiting.';
-    sleep(5);
+    echo N.' You need to configure config.php! Exiting.'.N;
+    WinSleep(5);
     die();
 }
 
-echo ' File to send : ';
-
-while ($GLOBALS['file'] = fgets(STDIN)) {
-       break;
+if (!is_dir('tmp/')) {
+    mkdir('tmp/');
 }
 
-$GLOBALS['file'] = trim($GLOBALS['file']);
-
-if (is_file(dirname(__FILE__).DIRECTORY_SEPARATOR.$GLOBALS['file'])) {
-    echo PHP_EOL;
-    echo ' File size         : '.formatBytes(filesize($GLOBALS['file'])).PHP_EOL;
-    
-    /* zip file */
-    echo ' Compressing file...'.PHP_EOL;
-    $zip = new ZipArchive();
-    $filename = './encoded_file';
-    $zip->open($filename, ZipArchive::CREATE);
-    $zip->addFile($GLOBALS['file']);
-    $zip->close();
-
-    $file_content = file_get_contents('encoded_file');
-
-    /* encode file */
-    $base91 = new Base91();
-    $encoded_content = $base91->encode($file_content);
-
-    /* save to file */
-    file_put_contents('encoded_file', $encoded_content);
-  
-    $file_name = 'encoded_file';
-
-    echo ' Encoded file size : '.formatBytes(filesize($file_name));
-    echo PHP_EOL;
-    echo ' Spliting file...'.PHP_EOL;
-
-    Split($file_name, 'tmp/');
-
-    echo PHP_EOL;
-    $cost = (0.1 * CountFiles('tmp/')) + 0.1;
-    echo ' Transaction cost  : '.$cost.' lsk';
-    echo PHP_EOL;
-    echo ' --------------------------------------------------';
-    echo PHP_EOL.PHP_EOL;
-    echo ' Tx(s) to send: '.(1 + CountFiles('tmp/'));
-    echo PHP_EOL.PHP_EOL;
-
-    echo ' Proceed? (yes/no) : ';
-
-    while ($answer = fgets(STDIN)) {
-           break;
+if (count(glob("tmp/*")) !== 0 && is_file('temp_meta')) {
+    echo N.' Detected that last file send was not ended';
+    echo N.' Do you want to resume sending file? (yes/no): ';
+    $answer = Interact();
+       
+    if ($answer == 'yes' xor $answer == 'y') {
+        echo N;
+        $GLOBALS['resume'] = 'yes';
+   
+        $handle = file_get_contents('temp_meta');
+        $temp_meta = explode('/', $handle);
+            
+        $GLOBALS['tmp_meta_filename'] = $temp_meta[0];
+        $GLOBALS['tmp_meta_filesize'] = $temp_meta[1];
+       
+        Start();
+    } else {
+             DeleteTempFiles();
+             Start('normal');
     }
+} else {
+         DeleteTempFiles();
+         Start('normal');
+}
+//---------------------------------------------------------------------------------------------------
+function Start($option = '')
+{
+    if ($option == 'normal') {
+        echo N.' File to send: ';
 
-    $answer = trim($answer);
+        $GLOBALS['file'] = Interact();
+
+        if (is_file(dirname(__FILE__).DIRECTORY_SEPARATOR.$GLOBALS['file'])) {
+            echo N;
+            echo ' File size         : '.formatBytes(filesize($GLOBALS['file'])).N;
+    
+            /* zip file */
+            echo ' Compressing file...'.N;
+            $zip = new ZipArchive();
+            $filename = './encoded_file';
+            $zip->open($filename, ZipArchive::CREATE);
+            $zip->addFile($GLOBALS['file']);
+            $zip->close();
+
+            $file_content = file_get_contents('encoded_file');
+
+            /* encode file */
+            $base91 = new Base91();
+            $encoded_content = $base91->encode($file_content);
+
+            /* save to file */
+            file_put_contents('encoded_file', $encoded_content);
+  
+            echo ' Encoded file size : '.formatBytes(filesize('encoded_file'));
+            echo N;
+            echo ' Splitting file...'.N;
+
+            Split('encoded_file', 'tmp/');
+        } else {
+                 echo N.' File does not exist or is located in another directory'.N;
+                 echo ' file to be sent must be in the same directory as tool directory, Exiting.'.N;
+                 WinSleep(5);
+                 die();
+        }
+    }
+        echo N;
+        $cost = (0.1 * CountFiles('tmp/')) + 0.1;
+        echo ' Transaction cost  : '.$cost.' lsk';
+        echo N;
+        echo ' Tx(s) to send     : '.(1 + CountFiles('tmp/')).N;
+        echo ' --------------------------------------------------';
+        echo N.N;
+
+        echo ' Proceed? (yes/no) : ';
+
+        $answer = Interact();
 
     if ($answer == 'yes' xor $answer == 'y') {
         /* Send txs */
-        echo PHP_EOL;
+        echo N;
         SendData();
     } else {
              DeleteTempFiles();
     }
-} else {
-         echo PHP_EOL.' File does not exist or is located in another directory'.PHP_EOL;
-         echo ' file to be sent must be in the same directory as tool directory, Exiting.';
-         sleep(5);
+}
+//---------------------------------------------------------------------------------------------------
+function WinSleep($time)
+{
+    if (isset($GLOBALS['OS'])) {
+        sleep($time);
+    }
+}
+//---------------------------------------------------------------------------------------------------
+function Interact()
+{
+    while ($ask = fgets(STDIN)) {
+           break;
+    }
+    $ask = trim($ask);
+
+    return $ask;
 }
 //---------------------------------------------------------------------------------------------------
 function SendData()
@@ -137,6 +170,7 @@ function SendData()
 
     foreach ($files as $key => $file) {
         if ($key == $last_key) {
+//---------------------------------------------------------------------------------------------------
             /* last tx */
             $data = file_get_contents($file)."'".$id;
             $tx = CreateTransaction($GLOBALS['ADDRESS'], '1', $GLOBALS['PASSWORD'], false, $data, -10);
@@ -145,43 +179,52 @@ function SendData()
             $result = SendTransaction(json_encode($tx), $GLOBALS['server']);
 
             if ($result['data']['message'] == 'Transaction(s) accepted') {
-                echo ' Transaction: ('.($file).') < sent'.PHP_EOL;
-//---------------------------------------------------------------------------------------------------
-                /* send meta data */
-                echo PHP_EOL.' Sending Meta Data...'.PHP_EOL;
- 
-                $size = filesize($GLOBALS['file']);
-                $filename = $GLOBALS['file'];
+                echo ' Transaction: ('.($file).') < sent'.N;
 
+                /* send meta data */
+                echo N.' Sending Meta Data...'.N;
+ 
                 $Func = new Base91();
                 
                 /* meta data */
-                $data = $Func->encode("M'".$filename."'".filesize('encoded_file')."'".$id);
-            
+                if (!isset($GLOBALS['resume'])) {
+                    $data = $Func->encode("M'".$GLOBALS['file']."'".filesize('encoded_file')."'".$id);
+                } else {
+                         $data = $Func->encode("M'".$GLOBALS['tmp_meta_filename']."'".filesize('encoded_file')."'".$id);
+                }
+
                 $tx = CreateTransaction($GLOBALS['ADDRESS'], '1', $GLOBALS['PASSWORD'], false, $data, -10);
                 $result = SendTransaction(json_encode($tx), $GLOBALS['server']);
-//---------------------------------------------------------------------------------------------------
-                if ($result['data']['message'] == 'Transaction(s) accepted') {
-                    echo ' Done. '.PHP_EOL;
-                
-                    /* Deleting temp files */
-                    DeleteTempFiles();
 
-                    echo PHP_EOL.' Your Data ID for file: '.$tx['id'].PHP_EOL;
+                if ($result['data']['message'] == 'Transaction(s) accepted') {
+                    echo ' Done. '.N;
+                    /* Deleting temp files */
+                    unlink('encoded_file');
+                    unlink('temp_meta');
+                    unlink($file);
+
+                    echo N.' Your Data ID for file: '.$tx['id'].N;
                     if (!empty($GLOBALS['OS'])) {
-                        echo PHP_EOL.' You can close this window...';
-                        sleep(9999);
+                        echo N.' You can close this window...';
+                        WinSleep(999);
                     } else {
                              die();
                     }
                 }
             } else {
-                     echo 'ERROR: '.PHP_EOL;
+                     echo 'ERROR: '.N;
                      var_dump($tx);
                      var_dump($result);
                      die();
             }
+//---------------------------------------------------------------------------------------------------
         } else {
+            if (isset($GLOBALS['resume'])) {
+                $handle = file_get_contents('temp_meta');
+                $temp_meta = explode('/', $handle);
+                $id = $temp_meta[2];
+            }
+
             if (empty($id)) {
                 /* first tx */
                 $data = file_get_contents($file);
@@ -194,9 +237,18 @@ function SendData()
 
             $result = SendTransaction(json_encode($tx), $GLOBALS['server']);
             if ($result['data']['message'] == 'Transaction(s) accepted') {
-                echo ' Transaction: ('.$file.') < sent'.PHP_EOL;
+                /* delete sended file piece */
+                unlink($file);
+                /* write data for meta needed to resume */
+                if (!isset($GLOBALS['resume'])) {
+                    file_put_contents('temp_meta', $GLOBALS['file'].'/'.filesize('encoded_file').'/'.$id);
+                } else {
+                         file_put_contents('temp_meta', $GLOBALS['tmp_meta_filename'].
+                                           '/'.filesize('encoded_file').'/'.$id);
+                }
+                echo ' Transaction: ('.$file.') < sent'.N;
             } else {
-                     echo 'ERROR: '.PHP_EOL;
+                     echo 'ERROR: '.N;
                      var_dump($tx);
                      var_dump($result);
                      die();
@@ -209,17 +261,25 @@ function SendData()
 //---------------------------------------------------------------------------------------------------
 function DeleteTempFiles()
 {
-    if (is_file('encoded_file')) {
-        unlink('encoded_file');
-    }
+    if (is_dir('tmp/') && count(glob("tmp/*")) !== 0) {
+        echo N.' Cleaning temp files...'.N;
 
-    $di = new RecursiveDirectoryIterator('tmp/', FilesystemIterator::SKIP_DOTS);
-    $ri = new RecursiveIteratorIterator($di, RecursiveIteratorIterator::CHILD_FIRST);
+        if (is_file('encoded_file')) {
+            unlink('encoded_file');
+        }
+
+        if (is_file('temp_meta')) {
+            unlink('temp_meta');
+        }
+
+        $di = new RecursiveDirectoryIterator('tmp/', FilesystemIterator::SKIP_DOTS);
+        $ri = new RecursiveIteratorIterator($di, RecursiveIteratorIterator::CHILD_FIRST);
     
-    foreach ($ri as $file) {
-        $file->isDir() ?  rmdir($file) : unlink($file);
+        foreach ($ri as $file) {
+            $file->isDir() ?  rmdir($file) : unlink($file);
+        }
+        return true;
     }
-    return true;
 }
 //---------------------------------------------------------------------------------------------------
 function CountFiles($directory)
