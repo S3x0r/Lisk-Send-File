@@ -2,6 +2,8 @@
 
 error_reporting(0);
 
+ini_set('precision', 25);
+
 require_once('lib.php');
 require_once('config.php');
 
@@ -44,7 +46,7 @@ echo '
  B@B@@@B@B@B@B@@@B@B@@s           Srri;i;rrrssssssss22S5HS
  @B@B@B@B@B@BBMMGG9G:              :,::::iir;rs22SXGGMMMMB'.N.N.N;
 
-echo ' Lisk Send 0.4 (send file to lisk blockchain)'.N;
+echo ' Lisk Send 0.5 (send file to lisk blockchain)'.N;
 echo ' by minionsteam.org, phoenix1969, sexor, zOwn3d'.N;
 echo ' ------------------------------------------------------'.N;
 
@@ -124,8 +126,10 @@ function Start($option = '')
         }
     }
         echo N;
+        ini_restore('precision');
         $cost = (0.1 * CountFiles('tmp/')) + 0.1;
         echo ' Transaction cost  : '.$cost.' lsk';
+        ini_set('precision', 25);
         echo N;
         echo ' Tx(s) to send     : '.(1 + CountFiles('tmp/')).N;
         echo ' --------------------------------------------------';
@@ -170,9 +174,8 @@ function SendData()
 
     foreach ($files as $key => $file) {
         if ($key == $last_key) {
-//---------------------------------------------------------------------------------------------------
             /* last tx */
-            $data = file_get_contents($file)."'".$id;
+            $data = file_get_contents($file)."'".toHex($id);
             $tx = CreateTransaction($GLOBALS['ADDRESS'], '1', $GLOBALS['PASSWORD'], false, $data, -10);
             $id = $tx['id'];
 
@@ -188,9 +191,10 @@ function SendData()
                 
                 /* meta data */
                 if (!isset($GLOBALS['resume'])) {
-                    $data = $Func->encode("M'".$GLOBALS['file']."'".filesize('encoded_file')."'".$id);
+                    $data = $Func->encode("M'".$GLOBALS['file']."'".filesize('encoded_file')."'".toHex($id));
                 } else {
-                         $data = $Func->encode("M'".$GLOBALS['tmp_meta_filename']."'".filesize('encoded_file')."'".$id);
+                         $data = $Func->encode("M'".$GLOBALS['tmp_meta_filename']."'".
+                                               filesize('encoded_file')."'".toHex($id));
                 }
 
                 $tx = CreateTransaction($GLOBALS['ADDRESS'], '1', $GLOBALS['PASSWORD'], false, $data, -10);
@@ -230,7 +234,7 @@ function SendData()
                 $data = file_get_contents($file);
             } else {
                      /* rest tx's */
-                     $data = file_get_contents($file)."'".$id;
+                     $data = file_get_contents($file)."'".toHex($id);
             }
             $tx = CreateTransaction($GLOBALS['ADDRESS'], '1', $GLOBALS['PASSWORD'], false, $data, -10);
             $id = $tx['id'];
@@ -294,8 +298,7 @@ function CountFiles($directory)
 //---------------------------------------------------------------------------------------------------
 function Split($filename, $dir)
 {
-    $length = filesize($filename);
-    $max = 43;
+    $max = 47;
     $i   = 1;
     $r   = fopen($filename, 'r');
     $w   = fopen($dir.$i, 'w');
@@ -323,6 +326,29 @@ function formatBytes($size, $precision = 0)
     }
 
     return round($size, $precision).' '.$unit[$i];
+}
+//---------------------------------------------------------------------------------------------------
+function toDec($hex)
+{
+    if (strlen($hex) == 1) {
+        return hexdec($hex);
+    } else {
+             $remain = substr($hex, 0, -1);
+             $last = substr($hex, -1);
+             return bcadd(bcmul(16, toDec($remain)), hexdec($last));
+    }
+}
+//---------------------------------------------------------------------------------------------------
+function toHex($dec)
+{
+    $last = bcmod($dec, 16);
+    $remain = bcdiv(bcsub($dec, $last), 16);
+
+    if ($remain == 0) {
+        return dechex($last);
+    } else {
+             return toHex($remain).dechex($last);
+    }
 }
 //---------------------------------------------------------------------------------------------------
 class Base91
