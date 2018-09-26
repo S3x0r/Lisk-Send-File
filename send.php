@@ -46,7 +46,7 @@ echo '
  B@B@@@B@B@B@B@@@B@B@@s           Srri;i;rrrssssssss22S5HS
  @B@B@B@B@B@BBMMGG9G:              :,::::iir;rs22SXGGMMMMB'.N.N.N;
 
-echo ' Lisk Send 0.5 (send file to lisk blockchain)'.N;
+echo ' Lisk Send 0.6 (send file to lisk blockchain)'.N;
 echo ' by minionsteam.org, phoenix1969, sexor, zOwn3d'.N;
 echo ' ------------------------------------------------------'.N;
 
@@ -106,12 +106,8 @@ function Start($option = '')
 
             $file_content = file_get_contents('encoded_file');
 
-            /* encode file */
-            $base91 = new Base91();
-            $encoded_content = $base91->encode($file_content);
-
             /* save to file */
-            file_put_contents('encoded_file', $encoded_content);
+            file_put_contents('encoded_file', Base91::encode($file_content));
   
             echo ' Encoded file size : '.formatBytes(filesize('encoded_file'));
             echo N;
@@ -182,19 +178,17 @@ function SendData()
             $result = SendTransaction(json_encode($tx), $GLOBALS['server']);
 
             if ($result['data']['message'] == 'Transaction(s) accepted') {
-                echo ' Transaction: ('.($file).') < sent'.N;
+                echo ' Left to send: '.CountFiles('tmp/').' tx(s)'.N;
 
                 /* send meta data */
                 echo N.' Sending Meta Data...'.N;
  
-                $Func = new Base91();
-                
                 /* meta data */
                 if (!isset($GLOBALS['resume'])) {
-                    $data = $Func->encode("M'".$GLOBALS['file']."'".filesize('encoded_file')."'".toHex($id));
+                    $data = Base91::encode("M'".$GLOBALS['file']."'".filesize('encoded_file')."'".toHex($id));
                 } else {
-                         $data = $Func->encode("M'".$GLOBALS['tmp_meta_filename']."'".
-                                               filesize('encoded_file')."'".toHex($id));
+                         $data = Base91::encode("M'".$GLOBALS['tmp_meta_filename']."'".
+                                                filesize('encoded_file')."'".toHex($id));
                 }
 
                 $tx = CreateTransaction($GLOBALS['ADDRESS'], '1', $GLOBALS['PASSWORD'], false, $data, -10);
@@ -250,7 +244,7 @@ function SendData()
                          file_put_contents('temp_meta', $GLOBALS['tmp_meta_filename'].
                                            '/'.filesize('encoded_file').'/'.$id);
                 }
-                echo ' Transaction: ('.$file.') < sent'.N;
+                echo ' Left to send: '.CountFiles('tmp/').' tx(s)'.N;
             } else {
                      echo 'ERROR: '.N;
                      var_dump($tx);
