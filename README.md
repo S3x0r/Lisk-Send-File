@@ -3,7 +3,7 @@ A tool to upload files, pictures, etc… to the lisk blockchain network.
 
 ## Windows
 ### Download
-To use Lisk-Send_File on windows you must download the latest version from the [releases page](https://github.com/S3x0r/Lisk-Send-File/releases).
+To use Lisk-Send-File on windows you must download the latest version from the [releases page](https://github.com/S3x0r/Lisk-Send-File/releases).
 ### Configure
 When the download is done you need to configure the `config.php` file with your lisk id and the passphrase to access your lisk id.
 ```
