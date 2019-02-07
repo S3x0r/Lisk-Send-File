@@ -46,8 +46,8 @@ echo '
  B@B@@@B@B@B@B@@@B@B@@s           Srri;i;rrrssssssss22S5HS
  @B@B@B@B@B@BBMMGG9G:              :,::::iir;rs22SXGGMMMMB'.N.N.N;
 
-echo ' Lisk Send 0.6 (send file to lisk blockchain)'.N;
-echo ' by minionsteam.org, phoenix1969, sexor, zOwn3d'.N;
+echo ' Lisk Send 0.9 (send file to lisk blockchain)'.N;
+echo ' by minionsteam.org, phoenix1969, sexor'.N;
 echo ' ------------------------------------------------------'.N;
 
 if (empty($GLOBALS['ADDRESS']) or empty($GLOBALS['PASSWORD'])) {
@@ -178,7 +178,7 @@ function SendData()
             $result = SendTransaction(json_encode($tx), $GLOBALS['server']);
 
             if ($result['data']['message'] == 'Transaction(s) accepted') {
-                echo ' Left to send: '.CountFiles('tmp/').' tx(s)'.N;
+                echo ' Left to send: '.CountFiles('tmp/').' tx(s)'." \r";
 
                 /* send meta data */
                 echo N.' Sending Meta Data...'.N;
@@ -244,7 +244,7 @@ function SendData()
                          file_put_contents('temp_meta', $GLOBALS['tmp_meta_filename'].
                                            '/'.filesize('encoded_file').'/'.$id);
                 }
-                echo ' Left to send: '.CountFiles('tmp/').' tx(s)'.N;
+                echo ' Left to send: '.CountFiles('tmp/').' tx(s)'." \r";
             } else {
                      echo 'ERROR: '.N;
                      var_dump($tx);
