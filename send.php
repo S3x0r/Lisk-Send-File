@@ -56,9 +56,7 @@ if (empty($GLOBALS['ADDRESS']) or empty($GLOBALS['PASSWORD'])) {
     die();
 }
 
-if (!is_dir('tmp/')) {
-    mkdir('tmp/');
-}
+!is_dir('tmp/') ? mkdir('tmp/') : false;
 
 if (count(glob("tmp/*")) !== 0 && is_file('temp_meta')) {
     echo N.' Detected that last file send was not ended';
@@ -146,9 +144,7 @@ function Start($option = '')
 //---------------------------------------------------------------------------------------------------
 function WinSleep($time)
 {
-    if (isset($GLOBALS['OS'])) {
-        sleep($time);
-    }
+    isset($GLOBALS['OS']) ? sleep($time) : false;
 }
 //---------------------------------------------------------------------------------------------------
 function Interact()
@@ -184,12 +180,8 @@ function SendData()
                 echo N.' Sending Meta Data...'.N;
  
                 /* meta data */
-                if (!isset($GLOBALS['resume'])) {
-                    $data = Base91::encode("M'".$GLOBALS['file']."'".filesize('encoded_file')."'".toHex($id));
-                } else {
-                         $data = Base91::encode("M'".$GLOBALS['tmp_meta_filename']."'".
-                                                filesize('encoded_file')."'".toHex($id));
-                }
+                !isset($GLOBALS['resume']) ? $data = Base91::encode("M'".$GLOBALS['file']."'".filesize('encoded_file')."'".toHex($id)) :
+                                             $data = Base91::encode("M'".$GLOBALS['tmp_meta_filename']."'".filesize('encoded_file')."'".toHex($id));
 
                 $tx = CreateTransaction($GLOBALS['ADDRESS'], '1', $GLOBALS['PASSWORD'], false, $data, -10);
                 $result = SendTransaction(json_encode($tx), $GLOBALS['server']);
@@ -206,14 +198,14 @@ function SendData()
                         echo N.' You can close this window...';
                         WinSleep(999);
                     } else {
-                             die();
+                             exit;
                     }
                 }
             } else {
                      echo 'ERROR: '.N;
                      var_dump($tx);
                      var_dump($result);
-                     die();
+                     exit;
             }
 //---------------------------------------------------------------------------------------------------
         } else {
@@ -223,13 +215,9 @@ function SendData()
                 $id = $temp_meta[2];
             }
 
-            if (empty($id)) {
-                /* first tx */
-                $data = file_get_contents($file);
-            } else {
-                     /* rest tx's */
-                     $data = file_get_contents($file)."'".toHex($id);
-            }
+            empty($id) ? /* first tx */  $data = file_get_contents($file) :
+                         /* rest tx's */ $data = file_get_contents($file)."'".toHex($id);
+
             $tx = CreateTransaction($GLOBALS['ADDRESS'], '1', $GLOBALS['PASSWORD'], false, $data, -10);
             $id = $tx['id'];
 
@@ -238,20 +226,17 @@ function SendData()
                 /* delete sended file piece */
                 unlink($file);
                 /* write data for meta needed to resume */
-                if (!isset($GLOBALS['resume'])) {
-                    file_put_contents('temp_meta', $GLOBALS['file'].'/'.filesize('encoded_file').'/'.$id);
-                } else {
-                         file_put_contents('temp_meta', $GLOBALS['tmp_meta_filename'].
-                                           '/'.filesize('encoded_file').'/'.$id);
-                }
+                !isset($GLOBALS['resume']) ? file_put_contents('temp_meta', $GLOBALS['file'].'/'.filesize('encoded_file').'/'.$id) :
+                                             file_put_contents('temp_meta', $GLOBALS['tmp_meta_filename'].'/'.filesize('encoded_file').'/'.$id);
+
                 echo ' Left to send: '.CountFiles('tmp/').' tx(s)'." \r";
             } else {
                      echo 'ERROR: '.N;
                      var_dump($tx);
                      var_dump($result);
-                     die();
+                     exit;
             }
-         /* slow down if file bigger */
+         /* slow down if file is big */
         //sleep(1);
         }
     }
@@ -262,13 +247,8 @@ function DeleteTempFiles()
     if (is_dir('tmp/') && count(glob("tmp/*")) !== 0) {
         echo N.' Cleaning temp files...'.N;
 
-        if (is_file('encoded_file')) {
-            unlink('encoded_file');
-        }
-
-        if (is_file('temp_meta')) {
-            unlink('temp_meta');
-        }
+        is_file('encoded_file') ? unlink('encoded_file') : false;
+        is_file('temp_meta') ? unlink('temp_meta') : false;
 
         $di = new RecursiveDirectoryIterator('tmp/', FilesystemIterator::SKIP_DOTS);
         $ri = new RecursiveIteratorIterator($di, RecursiveIteratorIterator::CHILD_FIRST);
@@ -284,9 +264,9 @@ function CountFiles($directory)
 {
     $filecount = 0;
     $files = glob($directory."*");
-    if ($files) {
-        $filecount = count($files);
-    }
+
+    $files ? $filecount = count($files) : false;
+
     return $filecount;
 }
 //---------------------------------------------------------------------------------------------------
@@ -298,13 +278,13 @@ function Split($filename, $dir)
     $w   = fopen($dir.$i, 'w');
 
     while (!feof($r)) {
-        $buffer =   fread($r, $max);
+        $buffer = fread($r, $max);
         fwrite($w, $buffer);
 
         if (strlen($buffer) >= $max) {
             fclose($w);
             $i++;
-            $w  =   fopen($dir.$i, 'w');
+            $w = fopen($dir.$i, 'w');
         }
     }
     fclose($w);
