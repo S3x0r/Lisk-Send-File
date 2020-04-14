@@ -46,7 +46,7 @@ echo '
  B@B@@@B@B@B@B@@@B@B@@s           Srri;i;rrrssssssss22S5HS
  @B@B@B@B@B@BBMMGG9G:              :,::::iir;rs22SXGGMMMMB'.N.N.N;
 
-echo " Lisk Send 1.1 (send file to Lisk blockchain)\n".
+echo " Lisk Send 1.2 (send file to Lisk blockchain)\n".
      " by minionsteam.org, phoenix1969, minions\n".
      " ------------------------------------------------------\n";
 
@@ -200,6 +200,8 @@ function SendData()
                      echo " ERROR:\n";
                      var_dump($tx);
                      var_dump($result);
+					 echo "\n End of ERROR response, Exiting.";
+					 WinSleep(15);
                      exit;
             }
 //---------------------------------------------------------------------------------------------------
@@ -229,6 +231,8 @@ function SendData()
                      echo " ERROR:\n";
                      var_dump($tx);
                      var_dump($result);
+					 echo "\n End of ERROR response, Exiting.";
+					 WinSleep(15);
                      exit;
             }
          /* slow down if file is big */
