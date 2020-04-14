@@ -46,21 +46,21 @@ echo '
  B@B@@@B@B@B@B@@@B@B@@s           Srri;i;rrrssssssss22S5HS
  @B@B@B@B@B@BBMMGG9G:              :,::::iir;rs22SXGGMMMMB'.N.N.N;
 
-echo ' Lisk Send 0.9 (send file to lisk blockchain)'.N;
-echo ' by minionsteam.org, phoenix1969, sexor'.N;
-echo ' ------------------------------------------------------'.N;
+echo " Lisk Send 1.1 (send file to Lisk blockchain)\n".
+     " by minionsteam.org, phoenix1969, minions\n".
+     " ------------------------------------------------------\n";
 
 if (empty($GLOBALS['ADDRESS']) or empty($GLOBALS['PASSWORD'])) {
-    echo N.' You need to configure config.php! Exiting.'.N;
+    echo "\n You need to configure config.php! Exiting.\n";
     WinSleep(5);
-    die();
+    exit;
 }
 
 !is_dir('tmp/') ? mkdir('tmp/') : false;
 
 if (count(glob("tmp/*")) !== 0 && is_file('temp_meta')) {
-    echo N.' Detected that last file send was not ended';
-    echo N.' Do you want to resume sending file? (yes/no): ';
+    echo "\n Detected that last file send was not ended".
+         "\n Do you want to resume sending file? (yes/no): ";
     $answer = Interact();
        
     if ($answer == 'yes' xor $answer == 'y') {
@@ -86,16 +86,15 @@ if (count(glob("tmp/*")) !== 0 && is_file('temp_meta')) {
 function Start($option = '')
 {
     if ($option == 'normal') {
-        echo N.' File to send: ';
+        echo "\n File to send: ";
 
         $GLOBALS['file'] = Interact();
 
         if (is_file(dirname(__FILE__).DIRECTORY_SEPARATOR.$GLOBALS['file'])) {
-            echo N;
-            echo ' File size         : '.formatBytes(filesize($GLOBALS['file'])).N;
+            echo "\n File size         : ".formatBytes(filesize($GLOBALS['file']))."\n";
     
             /* zip file */
-            echo ' Compressing file...'.N;
+            echo " Compressing file...\n";
             $zip = new ZipArchive();
             $filename = './encoded_file';
             $zip->open($filename, ZipArchive::CREATE);
@@ -107,29 +106,25 @@ function Start($option = '')
             /* save to file */
             file_put_contents('encoded_file', Base91::encode($file_content));
   
-            echo ' Encoded file size : '.formatBytes(filesize('encoded_file'));
-            echo N;
-            echo ' Splitting file...'.N;
+            echo " Encoded file size : ".formatBytes(filesize('encoded_file')).
+                 "\n Splitting file...\n";
 
             Split('encoded_file', 'tmp/');
         } else {
-                 echo N.' File does not exist or is located in another directory'.N;
-                 echo ' file to be sent must be in the same directory as tool directory, Exiting.'.N;
+                 echo "\n File does not exist or is located in another directory\n".
+                      " file to be sent must be in the same directory as tool directory, Exiting.\n";
                  WinSleep(5);
-                 die();
+                 exit;
         }
     }
         echo N;
         ini_restore('precision');
         $cost = (0.1 * CountFiles('tmp/')) + 0.1;
-        echo ' Transaction cost  : '.$cost.' lsk';
+        echo " Transaction cost  : {$cost} lsk";
         ini_set('precision', 25);
-        echo N;
-        echo ' Tx(s) to send     : '.(1 + CountFiles('tmp/')).N;
-        echo ' --------------------------------------------------';
-        echo N.N;
-
-        echo ' Proceed? (yes/no) : ';
+        echo "\n Tx(s) to send     : ".(1 + CountFiles('tmp/'))."\n".
+             " --------------------------------------------------\n\n".
+             " Proceed? (yes/no) : ";
 
         $answer = Interact();
 
@@ -187,22 +182,22 @@ function SendData()
                 $result = SendTransaction(json_encode($tx), $GLOBALS['server']);
 
                 if ($result['data']['message'] == 'Transaction(s) accepted') {
-                    echo ' Done. '.N;
+                    echo " Done.\n";
                     /* Deleting temp files */
                     unlink('encoded_file');
                     unlink('temp_meta');
                     unlink($file);
 
-                    echo N.' Your Data ID for file: '.$tx['id'].N;
+                    echo "\n Your Data ID for file: {$tx['id']}\n";
                     if (!empty($GLOBALS['OS'])) {
-                        echo N.' You can close this window...';
+                        echo "\n You can close this window...";
                         WinSleep(999);
                     } else {
                              exit;
                     }
                 }
             } else {
-                     echo 'ERROR: '.N;
+                     echo " ERROR:\n";
                      var_dump($tx);
                      var_dump($result);
                      exit;
@@ -229,9 +224,9 @@ function SendData()
                 !isset($GLOBALS['resume']) ? file_put_contents('temp_meta', $GLOBALS['file'].'/'.filesize('encoded_file').'/'.$id) :
                                              file_put_contents('temp_meta', $GLOBALS['tmp_meta_filename'].'/'.filesize('encoded_file').'/'.$id);
 
-                echo ' Left to send: '.CountFiles('tmp/').' tx(s)'." \r";
+                echo " Left to send: ".CountFiles('tmp/')." tx(s)\r";
             } else {
-                     echo 'ERROR: '.N;
+                     echo " ERROR:\n";
                      var_dump($tx);
                      var_dump($result);
                      exit;
@@ -245,7 +240,7 @@ function SendData()
 function DeleteTempFiles()
 {
     if (is_dir('tmp/') && count(glob("tmp/*")) !== 0) {
-        echo N.' Cleaning temp files...'.N;
+        echo "\n Cleaning temp files...\n";
 
         is_file('encoded_file') ? unlink('encoded_file') : false;
         is_file('temp_meta') ? unlink('temp_meta') : false;
